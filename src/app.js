@@ -46,7 +46,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors({ origin: 'http://localhost:8080', methods: ["GET", "POST", "PUT"] }))
 
-
             //DB conection usando config archivo.env
 
             mongoose.connect(config.dbConnectionString, { 
