@@ -28,10 +28,10 @@ import businessRouter from './Routes/business.router.js'
 import ordersRouter from './Routes/orders.router.js'
 import cors from "cors"
 import cartsrouter from './Routes/cartsrouter.js';
+import sessionRoutes from './Routes/passportrouter.js';
 
 
-
-
+import githubRouter from './Routes/github.router.js';
 
 const app = express();
 const contenedorManager = new ContenedorManager();
@@ -109,23 +109,15 @@ app.use('/cart', cartsrouter);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.post('/api/sessions/login', passport.authenticate('local', { session: false }), (req, res) => {
-  // Si la autenticación es exitosa, puedes responder con éxito aquí
-  res.json({ message: 'Inicio de sesión exitoso' });
-});
+app.use('/api/sessions', sessionRoutes);
 app.use('/', viewsRouter);
 //Middleware cookies
-app.post('/api/sessions/github', passport.authenticate('github'));
+app.use('/api/sessions/github', githubRouter);
 app.use('/api/sessions', sessionsRouter);
 app.use('/cookies', cookieRouter);
 app.use('/',viewsRouter);
 app.use('/api/users', userRouter);
-app.get('/register', (req, res) => {
-  res.render('register', {
-    title: 'Registrar nuevo Usuario'
-  });
-});
-// Ruta principal para mostrar la página de inicio
+
 
 // Usar el enrutador de vistas
 app.use('/', viewsRouter);

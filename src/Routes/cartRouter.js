@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import CartController from '../controllers/cart.controllers.js';
+import { checkRoles } from '../middleware/checkroles.middleware.js';
+import { isAuth } from '../middleware/auth.middleware.js';
 
 const router = Router();
 const cartController = new CartController();
@@ -26,6 +28,10 @@ router.post('/', cartController.createCart);
 router.delete('/:cid', cartController.clearCart);
 
 router.post('/:cid/purchase', cartController.purchaseCart); 
+router.post('/:cid/:productId', isAuth, checkRoles(['user']), cartController.addProduct);
+
+
+router.put('/:cid', isAuth, checkRoles(['admin']), cartController.updateCart);
 //RUTA PARA ELIMINAR EL CARRITO DE LA BASE DE DATOS , SE DEBE COMENTAR CLEAR CAR
 //*router.delete('/:cartId', cartManager.deleteCartById);/*
 
