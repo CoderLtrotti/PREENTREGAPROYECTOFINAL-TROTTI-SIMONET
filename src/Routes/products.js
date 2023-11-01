@@ -1,5 +1,32 @@
-import express from 'express';
-import ContenedorManager from '../dao/ContenedorManager.js';
+import { Router } from 'express';
+import ProductsController from '../controllers/products.controllers.js';
+
+const Productrouter = Router();
+
+// Define las rutas utilizando las funciones de la clase ProductsController
+Productrouter.get('/', async (req, res) => {
+  await ProductsController.getAllProducts(req, res);
+});
+
+Productrouter.get('/:id', async (req, res) => {
+  await ProductsController.getProductById(req, res);
+});
+
+Productrouter.post('/', async (req, res) => {
+  await ProductsController.createProduct(req, res);
+});
+
+Productrouter.put('/:id', async (req, res) => {
+  await ProductsController.updateProduct(req, res);
+});
+
+Productrouter.delete('/:id', async (req, res) => {
+  await ProductsController.deleteProduct(req, res);
+});
+
+export default Productrouter;
+
+/*import ContenedorManager from '../dao/ContenedorManager.js';
 import { Router } from 'express';
 
 
@@ -68,4 +95,4 @@ Productrouter.delete('/:id', async (req, res) => {
   }
 });
 
-export default Productrouter;
+export default Productrouter;*/

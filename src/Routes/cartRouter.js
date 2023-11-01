@@ -1,31 +1,31 @@
 import { Router } from 'express';
-import CartManager from '../dao/cartsManajer.js'; 
+import CartController from '../controllers/cart.controllers.js';
 
 const router = Router();
-const cartManager = new CartManager();
+const cartController = new CartController();
 
 // DELETE /api/carts/:cid/products/:pid - Remove a product from the cart
-router.delete('/:cid/:productId/:pid', cartManager.removeProduct);
+router.delete('/:cid/:productId/:pid', cartController.removeProduct);
 
 // PUT /api/carts/:cid - Update the cart with an array of products
-router.put('/:cid', cartManager.updateCart);
+router.put('/:cid', cartController.updateCart);
 
 // PUT /api/carts/:cid/products/:pid - Update the quantity of a product in the cart
-router.put('/:cid/:productId/:pid', cartManager.updateProductQuantity);
+router.put('/:cid/:productId/:pid', cartController.updateProductQuantity);
 
 // DELETE /api/carts/:cid - Remove all products from the cart
-router.delete('/:cid', cartManager.clearCart);
+router.delete('/:cid', cartController.clearCart);
 
 // GET CART
-router.get('/:cid', cartManager.getCart);
+router.get('/:cid', cartController.getCart);
 
-router.post('/:cid/:productId', cartManager.addProduct);
+router.post('/:cid/:productId', cartController.addProduct);
 // CREATE CART
-router.post('/', cartManager.createCart);
+router.post('/', cartController.createCart);
  
-router.delete('/:cid', cartManager.clearCart);
+router.delete('/:cid', cartController.clearCart);
 
-router.post('/:cid/purchase', cartManager.purchaseCart); 
+router.post('/:cid/purchase', cartController.purchaseCart); 
 //RUTA PARA ELIMINAR EL CARRITO DE LA BASE DE DATOS , SE DEBE COMENTAR CLEAR CAR
 //*router.delete('/:cartId', cartManager.deleteCartById);/*
 

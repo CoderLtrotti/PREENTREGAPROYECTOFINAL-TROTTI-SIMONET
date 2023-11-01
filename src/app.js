@@ -20,13 +20,14 @@ import userRouter from './Routes/user.router.js';
 import initializePassport from './config/passport.config.js';
 import passport from 'passport';
 
-
+import loginrouter from './Routes/loginroutes.js';
 import sessionsRouter from './Routes/sessions.router.js';
 import bodyParser from 'body-parser';
 import usersRouter from './Routes/user.router.js'
 import businessRouter from './Routes/business.router.js'
 import ordersRouter from './Routes/orders.router.js'
 import cors from "cors"
+import cartsrouter from './Routes/cartsrouter.js';
 
 
 
@@ -84,24 +85,9 @@ app.use('/api1/products', Productrouter);
 
 app.use('/products', productRoutes);
 
+app.use('/cart', cartsrouter);
   // Actualizar la cantidad de ejemplares
 
-    app.get('/cart', async (req, res) => {
-      try {
-        // Recupera todos los carritos desde la base de datos
-        const carts = await Cart.find({}); // Esto supone que tienes un modelo de base de datos llamado 'Cart'
-    
-        // Extrae solo los IDs de los carritos
-        const cartIds = carts.map(cart => cart._id);
-    
-        // Renderiza la plantilla de Handlebars y pasa los IDs de los carritos
-        res.render('cart', { cartIds });
-      } catch (error) {
-        console.error('Error al recuperar carritos:', error);
-        res.status(500).send('Error al recuperar carritos');
-      }
-    });
-  
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(cookieParser('')); // Aquí puedes agregar una clave secreta si lo deseas
 
@@ -141,44 +127,10 @@ app.get('/register', (req, res) => {
   });
 });
 // Ruta principal para mostrar la página de inicio
-app.get('/index', (req, res) => {
-  const { user } = req.session;
 
-  // Renderiza la vista "index" con el mensaje de bienvenida y el botón de cierre de sesión
-  res.render('index', {
-    title: 'Página de Inicio',
-    user,
-    showWelcomeMessage: !!user, // Muestra el mensaje de bienvenida si el usuario está autenticado
-    showLogoutButton: !!user, // Muestra el botón de cierre de sesión si el usuario está autenticado
-  });
-});
-
-app.post('/login', (req, res) => {
-  const { email, password } = req.body; // Supongamos que se envía el correo y la contraseña desde el formulario
-
-  // Aquí debes realizar la lógica de autenticación, por ejemplo, consultar una base de datos
-  // para verificar si el usuario existe y si la contraseña es válida
-
-  // Ejemplo de verificación simple (esto puede variar dependiendo de tu implementación real):
-  if (email === 'usuario@example.com' && password === 'contraseña') {
-    // Autenticación exitosa, configura la variable de sesión con los datos del usuario
-    const user = {
-      id: 1,
-      email: email,
-      // Otras propiedades del usuario
-    };
-    req.session.user = user;
-
-    // Redirige al usuario a la página de bienvenida (index)
-    res.redirect('/index');
-  } else {
-    // Autenticación fallida, puedes mostrar un mensaje de error o redirigir a la página de inicio de sesión nuevamente
-    res.render('login', { error: 'Credenciales incorrectas' });
-  }
-});
 // Usar el enrutador de vistas
 app.use('/', viewsRouter);
-
+app.use('/login', loginrouter);
 const webServer = app.listen(8080, () => {
   console.log('Escuchando 8080');
 });
